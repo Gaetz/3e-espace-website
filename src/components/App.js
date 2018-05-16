@@ -24,12 +24,12 @@ class App extends Component {
 
   componentWillMount() {
     const config = {
-      apiKey: "AIzaSyC0fqjDZ5svMpxt2t1wFfZoBmquJ_eAeck",
-      authDomain: "react-auth-58991.firebaseapp.com",
-      databaseURL: "https://react-auth-58991.firebaseio.com",
-      projectId: "react-auth-58991",
-      storageBucket: "react-auth-58991.appspot.com",
-      messagingSenderId: "725846966804"
+      apiKey: "AIzaSyBbFm-oAhUN389iRWnDicRLHuHJZNdLDWM",
+      authDomain: "ljdlt-f153e.firebaseapp.com",
+      databaseURL: "https://ljdlt-f153e.firebaseio.com",
+      projectId: "ljdlt-f153e",
+      storageBucket: "ljdlt-f153e.appspot.com",
+      messagingSenderId: "406335043159"  
     };
     if (!firebase.apps.length) {
       firebase.initializeApp(config);

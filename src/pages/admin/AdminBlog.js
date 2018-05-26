@@ -4,16 +4,18 @@ import firebase from 'firebase';
 import Admin from './Admin';
 import InputText from '../../components/InputText';
 import InputMedia from '../../components/InputMedia';
+import InputBanner from '../../components/InputBanner';
 import BlogpostTable from '../../components/BlogpostTable';
 import byPropKey from '../../constants/utils'
 import UserContext from '../../context/UserContext';
-import { MediaType, PostState } from '../../constants/enums';
+import { PostState } from '../../constants/enums';
 
 const INITIAL_STATE = {
     title: '',
     resume: '',
     content: '',
     error: null,
+    banner: '',
     media: '',
     mediaKind: '',
     postState: PostState.ADD
@@ -29,12 +31,13 @@ class AdminBlog extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.database = firebase.database();
 
-        this.imagesRef = firebase.storage().ref().child('images');
+        this.bannersRef = firebase.storage().ref().child('banners');
 
         this.state = {
             title: '',
             resume: '',
             content: '',
+            banner: '',
             media: '',
             mediaKind: '',
             postState: PostState.ADD,
@@ -60,6 +63,7 @@ class AdminBlog extends Component {
             resume: this.state.posts[index].resume,
             content: this.state.posts[index].content,
             media: '',
+            banner: '',
             postState: PostState.EDIT
         });
     }
@@ -70,10 +74,8 @@ class AdminBlog extends Component {
     }
 
     reset() {
-        if (this.state.mediaKind === MediaType.IMAGE) {
-            if(document.getElementById('inputMedia'))
-                document.getElementById('inputMedia').files[0] = null;
-        }
+        if(document.getElementById('inputBanner'))
+            document.getElementById('inputBanner').files[0] = null;
         this.setState(INITIAL_STATE);
     }
 
@@ -83,37 +85,31 @@ class AdminBlog extends Component {
 
     create(e, user) {
         e.preventDefault();
-        let media = this.state.media;
-        // Image upload
-        if (this.state.mediaKind === MediaType.IMAGE) {
-            const file = document.getElementById('inputMedia').files[0];
-            if(file) {
-                this.setState({ postState: PostState.UPLOADING });
-                const filename = this.state.media.match(/[^\\/]*$/)[0];
-                const fileRef = this.imagesRef.child(filename);
-                media = fileRef.fullPath;
-                fileRef.put(file).then( snapshot => {
-                    this.createPost(user, media);
-                    this.reset();
-                }, error => {
-                    this.setState({ error, postState: PostState.ADD });
-                });
-            }
-        }
-        else {
-            this.createPost(user, media);
-            this.reset();
+        let banner = this.state.banner;
+        const file = document.getElementById('inputBanner').files[0];
+        if(file) {
+            this.setState({ postState: PostState.UPLOADING });
+            const filename = this.state.banner.match(/[^\\/]*$/)[0];
+            const fileRef = this.bannersRef.child(filename);
+            banner = fileRef.fullPath;
+            fileRef.put(file).then( snapshot => {
+                this.createPost(user, banner);
+                this.reset();
+            }, error => {
+                this.setState({ error, postState: PostState.ADD });
+            });
         }
     }
 
-    createPost(user, media) {
+    createPost(user, banner) {
         const newKey = this.database.ref().child('posts').push().key;
         const post = {
             key: newKey,
             author: user.email,
             title: this.state.title,
             resume: this.state.resume,
-            media: media,
+            banner: banner,
+            media: this.state.media,
             mediaKind: this.state.mediaKind,
             content: this.state.content,
             date: new Date().getTime()
@@ -138,9 +134,9 @@ class AdminBlog extends Component {
     }
 
     render() {
-        const { title, resume, content, error, postState, posts, media } = this.state;
-        const isInvalid = title === '' || resume === '' || content === '' || media === '' || postState === PostState.UPLOADING;
-        const isEmpty = title === '' && resume === '' && content === '' && media === '';
+        const { title, resume, content, error, postState, posts, media, banner } = this.state;
+        const isInvalid = title === '' || resume === '' || content === '' || banner === '' || media === '' || postState === PostState.UPLOADING;
+        const isEmpty = title === '' && resume === '' && content === '' && media === '' && banner === '';
         const errorMessage = error ?
             <p>{error.message}</p>
             : null;
@@ -166,6 +162,9 @@ class AdminBlog extends Component {
                         <form onSubmit={this.onSubmit}>
                             <InputText id='inputTitle' label='Titre' value={title} type='text'
                                 onChange={event => this.setState(byPropKey('title', event.target.value))}
+                            />
+                            <InputBanner id='inputBanner' label='Bannière' value={banner}
+                                onChange={event => this.setState(byPropKey('banner', event.target.value))}
                             />
                             <InputMedia id='inputMedia' label='Media' value={media}
                                 onMediaKindChange={(mediaKind) => this.setState({ mediaKind })}

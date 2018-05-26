@@ -15,11 +15,9 @@ class BlogpostPreview extends Component {
     }
 
     componentWillMount() {
-        if(this.props.post.mediaKind === MediaType.IMAGE) {
-            this.storageRef.child(this.props.post.media).getDownloadURL().then(url => {
-                this.setState({ imageUrl: url })
-            }).catch(error => console.log(error));
-        }
+        this.storageRef.child(this.props.post.banner).getDownloadURL().then(url => {
+            this.setState({ imageUrl: url })
+        }).catch(error => console.log(error));
     }
 
     render() {
@@ -29,6 +27,7 @@ class BlogpostPreview extends Component {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         let media = null;
+        let banner = null;
         switch(this.props.post.mediaKind) {
             case MediaType.VIDEO:
                 const videoId = this.props.post.media.match(/[^=/]*$/)[0];
@@ -36,22 +35,10 @@ class BlogpostPreview extends Component {
                     <div className='row'>
                         <div className='col-sm-1' />
                         <div className='col-sm-10' >
-                            <iframe width='100%' height='400' className='embed-responsive-item' src={`https://www.youtube.com/embed/${videoId}?rel=0`} allowFullScreen></iframe>
+                            <iframe width='100%' height='400' title={`video-${videoId}`} className='embed-responsive-item' src={`https://www.youtube.com/embed/${videoId}?rel=0`} allowFullScreen></iframe>
                         </div>
                         <div className='col-sm-1' />
                     </div>
-                break;
-            case MediaType.IMAGE:
-                if(this.state.imageUrl !== '') {
-                    media = 
-                        <div className='row'>
-                            <div className='col-sm-1' />
-                            <div className='col-sm-10'>
-                                <img width='100%' src={this.state.imageUrl} />
-                            </div>
-                            <div className='col-sm-1' />
-                        </div>
-                }
                 break;
             case MediaType.SOUNDCLOUD:
                 media = 
@@ -63,7 +50,16 @@ class BlogpostPreview extends Component {
                 break;
             default: break;
         }
-    
+        if(this.state.imageUrl !== '') {
+            banner = 
+                <div className='row'>
+                    <div className='col-sm-1' />
+                    <div className='col-sm-10'>
+                        <img width='100%' alt={this.props.post.title} src={this.state.imageUrl} />
+                    </div>
+                    <div className='col-sm-1' />
+                </div>
+        }
     
         return (
             <div>
@@ -72,6 +68,7 @@ class BlogpostPreview extends Component {
                             <h5 className='card-title align-baseline'>{this.props.post.title} </h5>
                             <footer className='blockquote-footer text-muted align-baseline'> by {this.props.post.author} | {year}/{month}/{day} </footer>
                         <hr/>
+                            {banner}
                             {media}
                         <br/>
                         <div className='row'>

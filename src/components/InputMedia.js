@@ -6,7 +6,7 @@ class InputMedia extends Component {
     constructor(props) {
         super();
         this.state = {
-            kind: MediaType.VIDEO,
+            kind: MediaType.SOUNDCLOUD,
             filename: ''
         };
         this.handleChangeKind = this.handleChangeKind.bind(this);
@@ -25,7 +25,7 @@ class InputMedia extends Component {
                     value={this.props.value}
                     onChange={this.props.onChange}
                     type='text'
-                    placeholder='Video url'
+                    placeholder='Url youtoube'
                     id={this.props.id}
                     className='form-control'
                 />
@@ -35,17 +35,7 @@ class InputMedia extends Component {
                     value={this.props.value}
                     onChange={this.props.onChange}
                     type='text'
-                    placeholder='Soundcloud url'
-                    id={this.props.id}
-                    className='form-control'
-                />
-                break;
-            case MediaType.IMAGE:
-                input = <input
-                    value={this.props.value}
-                    onChange={this.props.onChange}
-                    type='file'
-                    placeholder='Upload image'
+                    placeholder="Code de l'iframe Soundcloud" 
                     id={this.props.id}
                     className='form-control'
                 />
@@ -61,19 +51,14 @@ class InputMedia extends Component {
                 
                 <div className='col-sm-10'>
                     <div className='form-check form-check-inline'>
-                        <input type='radio' id='video' name='kind' value={MediaType.VIDEO} className="form-check-input"
-                            checked={kind === MediaType.VIDEO} onChange={this.handleChangeKind}/>
-                        <label className="form-check-label" htmlFor='video'>Video</label>
-                    </div>
-                    <div className='form-check form-check-inline'>
                         <input type='radio' id='souncloud' name='kind' value={MediaType.SOUNDCLOUD} className="form-check-input"
                             checked={kind === MediaType.SOUNDCLOUD} onChange={this.handleChangeKind} />
                         <label className="form-check-label" htmlFor='souncloud'>Souncloud</label>
                     </div>
                     <div className='form-check form-check-inline'>
-                        <input type='radio' id='image' name='kind' value={MediaType.IMAGE} className="form-check-input"
-                            checked={kind === MediaType.IMAGE} onChange={this.handleChangeKind} />
-                        <label className="form-check-label" htmlFor='image'>Image</label>
+                        <input type='radio' id='video' name='kind' value={MediaType.VIDEO} className="form-check-input"
+                            checked={kind === MediaType.VIDEO} onChange={this.handleChangeKind}/>
+                        <label className="form-check-label" htmlFor='video'>Video</label>
                     </div>
                     {input}
                 </div>

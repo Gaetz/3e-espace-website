@@ -9,13 +9,12 @@ class NavigationAdmin extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <Link to={routes.LANDING}>
+                <Link to={routes.BLOG}>
                     <img src="/img/rufflerim_logo.png" width="50" height="50" alt="Return to homepage" />
                 </Link>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav mr-auto">
-                        <Navlink title='Blog' route={routes.ADMIN_BLOG} />
-                        <Navlink title='Games' route={routes.ADMIN_GAMES} />
+                        <Navlink title='Articles' route={routes.ADMIN_BLOG} />
                     </ul>
                 </div>
                 <ul className="navbar-nav mr-auto">

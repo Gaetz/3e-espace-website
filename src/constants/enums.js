@@ -1,5 +1,4 @@
 export const MediaType = {
-    IMAGE: 'media_image',
     VIDEO: 'media_video',
     SOUNDCLOUD: 'media_soundcloud'
 }

@@ -1,0 +1,22 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    height: 100%;
+}
+
+.container-fluid,
+.row { height: inherit; }
+
+.logopart {
+}
+
+.textpart {
+    background-color: rgb(224, 13, 119);
+}
+
+.text p {
+    color: white;
+}

@@ -46,6 +46,10 @@ a {
     font-weight: bold;
 }
 
+.link {
+    line-height: 10px;
+}
+
 a:hover {
     color: #F74068;
     text-decoration: none;

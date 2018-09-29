@@ -15,9 +15,13 @@ class BlogpostPreview extends Component {
     }
 
     componentWillMount() {
-        this.storageRef.child(this.props.post.banner).getDownloadURL().then(url => {
+        /*this.storageRef.child(this.props.post.banner).getDownloadURL().then(url => {
             this.setState({ imageUrl: url })
-        }).catch(error => console.log(error));
+        }).catch(error => console.log(error));*/
+    }
+
+    formatContent(content) {
+        return content.replace(/\n/g, '<br />')
     }
 
     render() {
@@ -27,7 +31,7 @@ class BlogpostPreview extends Component {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         let media = null;
-        let banner = null;
+        //let banner = null;
         switch(this.props.post.mediaKind) {
             case MediaType.VIDEO:
                 const videoId = this.props.post.media.match(/[^=/]*$/)[0];
@@ -50,7 +54,7 @@ class BlogpostPreview extends Component {
                 break;
             default: break;
         }
-        if(this.state.imageUrl !== '') {
+        /*if(this.state.imageUrl !== '') {
             banner = 
                 <div className='row'>
                     <div className='col-sm-1' />
@@ -59,8 +63,8 @@ class BlogpostPreview extends Component {
                     </div>
                     <div className='col-sm-1' />
                 </div>
-        }
-    
+        }*/
+        console.log(this.props.post.content)
         return (
             <div>
                 <div className='card'>
@@ -68,7 +72,6 @@ class BlogpostPreview extends Component {
                             <h5 className='card-title align-baseline'>{this.props.post.title} </h5>
                             <footer className='blockquote-footer text-muted align-baseline'> by {this.props.post.author} | {year}/{month}/{day} </footer>
                         <hr/>
-                            {banner}
                             {media}
                         <br/>
                         <div className='row'>
@@ -85,8 +88,8 @@ class BlogpostPreview extends Component {
                             </div>
                             <div className='col-sm-1'/>
                         </div>
-                        <div className='collapse' id={`collapse-${this.props.post.key}`}>
-                            {this.props.post.content}
+                        <div className='collapse' id={`collapse-${this.props.post.key}`} 
+                            dangerouslySetInnerHTML={{__html: this.formatContent(this.props.post.content)}}>
                         </div>
                     </div>
                 </div>

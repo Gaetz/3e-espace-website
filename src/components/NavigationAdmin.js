@@ -10,7 +10,7 @@ class NavigationAdmin extends Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <Link to={routes.BLOG}>
-                    <img src="/img/rufflerim_logo.png" width="50" height="50" alt="Return to homepage" />
+                    Retour au site
                 </Link>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav mr-auto">

@@ -38,9 +38,9 @@ class App extends Component {
               <Route exact path={routes.LOGIN} component={() => <Login title='log in' />} />
               <Route exact path={routes.ADMIN_BLOG} component={() => <AdminBlog title='Blog admin' />} />
 
-              <Route exact path={routes.COMMUNITY} component={() => <Community title='Community' />} />
+              <Route exact path={routes.COMMUNITY} component={() => <Community title='Communauté' />} />
               <Route exact path={routes.BLOG} component={() => <Blog title='Blog' />} />
-              <Route exact path={routes.ABOUT} component={() => <About title='About' />} />
+              <Route exact path={routes.ABOUT} component={() => <About title='A propos' />} />
             </Switch>
           </div>
         </Router>

@@ -6,23 +6,25 @@ import Navlink from './Navlink'
 
 class Navigation extends Component {
     render() {
-        return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+       return (
+           <div>
                 <Link to={routes.BLOG}>
-                    <img src="/img/rufflerim_logo.png" width="50" height="50" alt="Return to homepage" />
+                    <center><img src="/img/3e_logo.jpg" height="300" alt="Return to homepage" /></center>
                 </Link>
-                <div className="collapse navbar-collapse" id="navbarNav">
+                <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav mr-auto">
+                            <Navlink title='Podcasts' route={routes.BLOG} />
+                            <Navlink title='Communauté' route={routes.COMMUNITY} />
+                            <Navlink title='A propos' route={routes.ABOUT} />
+                        </ul>
+                    </div>
                     <ul className="navbar-nav mr-auto">
-                        <Navlink title='Blog' route={routes.BLOG} />
-                        <Navlink title='Community' route={routes.COMMUNITY} />
-                        <Navlink title='About' route={routes.ABOUT} />
+                        <Navlink title='Login' route={routes.LOGIN} />
                     </ul>
+                </nav >
                 </div>
-                <ul className="navbar-nav mr-auto">
-                    <Navlink title='Login' route={routes.LOGIN} />
-                </ul>
-            </nav >
-        );
+       );
     }
 }
 

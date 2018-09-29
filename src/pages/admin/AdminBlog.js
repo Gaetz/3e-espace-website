@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import Admin from './Admin';
 import InputText from '../../components/InputText';
 import InputMedia from '../../components/InputMedia';
-import InputBanner from '../../components/InputBanner';
+//import InputBanner from '../../components/InputBanner';
 import BlogpostTable from '../../components/BlogpostTable';
 import byPropKey from '../../constants/utils'
 import UserContext from '../../context/UserContext';
@@ -31,13 +31,13 @@ class AdminBlog extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.database = firebase.database();
 
-        this.bannersRef = firebase.storage().ref().child('banners');
+        //this.bannersRef = firebase.storage().ref().child('banners');
 
         this.state = {
             title: '',
             resume: '',
             content: '',
-            banner: '',
+            //banner: '',
             media: '',
             mediaKind: '',
             postState: PostState.ADD,
@@ -63,7 +63,7 @@ class AdminBlog extends Component {
             resume: this.state.posts[index].resume,
             content: this.state.posts[index].content,
             media: '',
-            banner: '',
+            //banner: '',
             postState: PostState.EDIT
         });
     }
@@ -74,8 +74,8 @@ class AdminBlog extends Component {
     }
 
     reset() {
-        if(document.getElementById('inputBanner'))
-            document.getElementById('inputBanner').files[0] = null;
+        /*if(document.getElementById('inputBanner'))
+            document.getElementById('inputBanner').files[0] = null;*/
         this.setState(INITIAL_STATE);
     }
 
@@ -84,7 +84,7 @@ class AdminBlog extends Component {
     }
 
     create(e, user) {
-        e.preventDefault();
+        e.preventDefault();/*
         let banner = this.state.banner;
         const file = document.getElementById('inputBanner').files[0];
         if(file) {
@@ -98,17 +98,19 @@ class AdminBlog extends Component {
             }, error => {
                 this.setState({ error, postState: PostState.ADD });
             });
-        }
+        }*/
+        this.createPost(user);
+        this.reset();
     }
 
-    createPost(user, banner) {
+    createPost(user/*, banner*/) {
         const newKey = this.database.ref().child('posts').push().key;
         const post = {
             key: newKey,
             author: user.email,
             title: this.state.title,
             resume: this.state.resume,
-            banner: banner,
+            //banner: banner,
             media: this.state.media,
             mediaKind: this.state.mediaKind,
             content: this.state.content,
@@ -134,9 +136,9 @@ class AdminBlog extends Component {
     }
 
     render() {
-        const { title, resume, content, error, postState, posts, media, banner } = this.state;
-        const isInvalid = title === '' || resume === '' || content === '' || banner === '' || media === '' || postState === PostState.UPLOADING;
-        const isEmpty = title === '' && resume === '' && content === '' && media === '' && banner === '';
+        const { title, resume, content, error, postState, posts, media/*, banner*/ } = this.state;
+        const isInvalid = title === '' || resume === '' || content === '' /*|| banner === ''*/ || media === '' || postState === PostState.UPLOADING;
+        const isEmpty = title === '' && resume === '' && content === '' && media === '' /*&& banner === ''*/;
         const errorMessage = error ?
             <p>{error.message}</p>
             : null;
@@ -150,6 +152,13 @@ class AdminBlog extends Component {
                 break;
             default: break;
         }
+/*
+
+                            <InputBanner id='inputBanner' label='Bannière' value={banner}
+                                onChange={event => this.setState(byPropKey('banner', event.target.value))}
+                            />
+*/
+
 
         return (
             <UserContext.Consumer>
@@ -163,9 +172,7 @@ class AdminBlog extends Component {
                             <InputText id='inputTitle' label='Titre' value={title} type='text'
                                 onChange={event => this.setState(byPropKey('title', event.target.value))}
                             />
-                            <InputBanner id='inputBanner' label='Bannière' value={banner}
-                                onChange={event => this.setState(byPropKey('banner', event.target.value))}
-                            />
+
                             <InputMedia id='inputMedia' label='Media' value={media}
                                 onMediaKindChange={(mediaKind) => this.setState({ mediaKind })}
                                 onChange={event => this.setState(byPropKey('media', event.target.value))}

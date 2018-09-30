@@ -66,7 +66,7 @@ class BlogpostPreview extends Component {
                 <div className='card'>
                     <div className='card-body'>
                             <h5 className='card-title align-baseline'>{this.props.post.title} </h5>
-                            <footer className='blockquote-footer text-muted align-baseline'> by {this.props.post.author} | {year}/{month}/{day} </footer>
+                            <footer className='blockquote-footer text-muted align-baseline'>Le {day}/{month}/{year}</footer>
                         <hr/>
                             {media}
                         <br/>

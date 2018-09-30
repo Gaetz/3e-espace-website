@@ -77,7 +77,7 @@ class BlogpostPreview extends Component {
                                     <div className='col-sm-9'>{this.props.post.resume}</div>
                                     <div className='col-sm-3'>
                                         <button className='btn btn-primary' type='button' data-toggle='collapse' data-target={`#collapse-${this.props.post.key}`} aria-expanded='false' aria-controls={`collapse-${this.props.post.key}`}>
-                                            Read more
+                                            Détails
                                         </button>
                                     </div>
                                 </div>

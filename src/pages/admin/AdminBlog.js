@@ -3,6 +3,7 @@ import firebase from 'firebase';
 
 import Admin from './Admin';
 import InputText from '../../components/InputText';
+import InputDate from '../../components/InputDate';
 import InputMedia from '../../components/InputMedia';
 //import InputBanner from '../../components/InputBanner';
 import BlogpostTable from '../../components/BlogpostTable';
@@ -32,6 +33,10 @@ class AdminBlog extends Component {
         this.database = firebase.database();
         //this.bannersRef = firebase.storage().ref().child('banners');
 
+        const date = new Date();
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
         this.state = {
             key: '',
             title: '',
@@ -41,11 +46,16 @@ class AdminBlog extends Component {
             media: '',
             mediaKind: '',
             date: 0,
+            dateYear: year,
+            dateMonth: month,
+            dateDay: day,
             postState: PostState.ADD,
             error: null,
             posts: null
         }
+    }
 
+    componentDidMount() {
         // Get posts and listen for updates
         this.database.ref('posts').on('value', snapshot => {
             this.setState({ posts: snapshot.val() });
@@ -57,6 +67,10 @@ class AdminBlog extends Component {
     }
 
     handleEdit(index) {
+        const date = new Date(this.state.posts[index].date);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
         this.setState({
             key: this.state.posts[index].key,
             title: this.state.posts[index].title,
@@ -65,6 +79,9 @@ class AdminBlog extends Component {
             mediaKind: this.state.posts[index].mediaKind,
             media: this.state.posts[index].media,
             date: this.state.posts[index].date,
+            dateDay : day,
+            dateMonth: month,
+            dateYear: year,
             //banner: '',
             postState: PostState.EDIT
         });
@@ -107,6 +124,7 @@ class AdminBlog extends Component {
 
     createPost(user/*, banner*/) {
         const newKey = this.database.ref().child('posts').push().key;
+        const date = this.get_state_date();
         const post = {
             key: newKey,
             author: user.email,
@@ -116,13 +134,14 @@ class AdminBlog extends Component {
             media: this.state.media,
             mediaKind: this.state.mediaKind,
             content: this.state.content,
-            date: new Date().getTime()
+            date: date.getTime()
         };
         this.database.ref(`posts/${newKey}`).set(post);
     }
 
     update(e, user) {
         const key = this.state.key;
+        const date = this.get_state_date();
         const post = {
             key: key,
             author: user.email,
@@ -131,7 +150,7 @@ class AdminBlog extends Component {
             content: this.state.content,
             media: this.state.media,
             mediaKind: this.state.mediaKind,
-            date: this.state.date
+            date: date.getTime()
         };
         const updates = {};
         updates['/posts/' + key] = post;
@@ -140,8 +159,15 @@ class AdminBlog extends Component {
         e.preventDefault();
     }
 
+    get_state_date() {
+        let date = new Date()
+        date.setTime(0);
+        date.setFullYear(this.state.dateYear, this.state.dateMonth - 1, this.state.dateDay);
+        return date;
+    }
+
     render() {
-        const { title, resume, content, error, postState, posts, media/*, banner*/ } = this.state;
+        const { title, resume, content, error, postState, posts, media/*, banner*/, dateDay, dateMonth, dateYear } = this.state;
         const isInvalid = title === '' || resume === '' || content === '' /*|| banner === ''*/ || media === '' || postState === PostState.UPLOADING;
         const isEmpty = title === '' && resume === '' && content === '' && media === '' /*&& banner === ''*/;
         const errorMessage = error ?
@@ -157,14 +183,14 @@ class AdminBlog extends Component {
                 break;
             default: break;
         }
+
+
 /*
 
-                            <InputBanner id='inputBanner' label='Bannière' value={banner}
-                                onChange={event => this.setState(byPropKey('banner', event.target.value))}
-                            />
+                        <InputBanner id='inputBanner' label='Bannière' value={banner}
+                            onChange={event => this.setState(byPropKey('banner', event.target.value))}
+                        />
 */
-
-
         return (
             <UserContext.Consumer>
                 {currentUser =>
@@ -188,6 +214,13 @@ class AdminBlog extends Component {
                             <InputText textarea id='inputContent' label='Texte' value={content} type='text'
                                 onChange={event => this.setState(byPropKey('content', event.target.value))}
                             />
+
+                            <InputDate id='inputDate' label='Date' type='number' 
+                                valueDay={dateDay} onChangeDay={event => this.setState(byPropKey('dateDay', event.target.value))} labelDay='Jour du mois'
+                                valueMonth={dateMonth} onChangeMonth={event => this.setState(byPropKey('dateMonth', event.target.value))} labelMonth='Mois'
+                                valueYear={dateYear} onChangeYear={event => this.setState(byPropKey('dateYear', event.target.value))} labelYear='Année'
+                            />
+
                             <button disabled={isInvalid} type='submit' className='btn btn-primary'
                                 onClick={postState === PostState.EDIT ? e => this.update(e, currentUser) : e => this.create(e, currentUser)}>
                                 {buttonLabel}

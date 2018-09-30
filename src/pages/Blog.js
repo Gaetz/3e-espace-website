@@ -11,6 +11,9 @@ class Blog extends Component {
         this.state = {
             posts: null
         }
+    }
+
+    componentDidMount() {
         // Get posts
         firebase.database().ref('posts').once('value').then(snapshot => {
             this.setState({ posts: snapshot.val() });

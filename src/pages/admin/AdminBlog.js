@@ -30,23 +30,22 @@ class AdminBlog extends Component {
         this.handleReset = this.handleReset.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.database = firebase.database();
-
         //this.bannersRef = firebase.storage().ref().child('banners');
 
         this.state = {
+            key: '',
             title: '',
             resume: '',
             content: '',
             //banner: '',
             media: '',
             mediaKind: '',
+            date: 0,
             postState: PostState.ADD,
             error: null,
             posts: null
         }
-    }
 
-    componentWillMount() {
         // Get posts and listen for updates
         this.database.ref('posts').on('value', snapshot => {
             this.setState({ posts: snapshot.val() });
@@ -59,10 +58,13 @@ class AdminBlog extends Component {
 
     handleEdit(index) {
         this.setState({
+            key: this.state.posts[index].key,
             title: this.state.posts[index].title,
             resume: this.state.posts[index].resume,
             content: this.state.posts[index].content,
-            media: '',
+            mediaKind: this.state.posts[index].mediaKind,
+            media: this.state.posts[index].media,
+            date: this.state.posts[index].date,
             //banner: '',
             postState: PostState.EDIT
         });
@@ -120,18 +122,21 @@ class AdminBlog extends Component {
     }
 
     update(e, user) {
-        /*const newKey = this.database.ref().child('posts').push().key;
+        const key = this.state.key;
         const post = {
+            key: key,
             author: user.email,
             title: this.state.title,
             resume: this.state.resume,
             content: this.state.content,
-            date: new Date()
+            media: this.state.media,
+            mediaKind: this.state.mediaKind,
+            date: this.state.date
         };
         const updates = {};
-        updates['/posts/' + newKey] = post;
+        updates['/posts/' + key] = post;
         
-        this.database.ref().update(updates);*/
+        this.database.ref().update(updates);
         e.preventDefault();
     }
 

@@ -8,7 +8,6 @@ import firebase from 'firebase';
 
 import About from '../pages/About';
 import Blog from '../pages/Blog';
-import Community from '../pages/Community';
 import Login from '../pages/admin/Login';
 import AdminBlog from '../pages/admin/AdminBlog';
 
@@ -16,7 +15,8 @@ import withAuth from './withAuth';
 
 class App extends Component {
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     const config = {
       apiKey: "AIzaSyBbFm-oAhUN389iRWnDicRLHuHJZNdLDWM",
       authDomain: "ljdlt-f153e.firebaseapp.com",
@@ -36,10 +36,9 @@ class App extends Component {
           <div className="container">
             <Switch>
               <Route exact path={routes.LOGIN} component={() => <Login title='log in' />} />
-              <Route exact path={routes.ADMIN_BLOG} component={() => <AdminBlog title='Blog admin' />} />
+              <Route exact path={routes.ADMIN_BLOG} component={() => <AdminBlog title='Podcasts admin' />} />
 
-              <Route exact path={routes.COMMUNITY} component={() => <Community title='Communauté' />} />
-              <Route exact path={routes.BLOG} component={() => <Blog title='Blog' />} />
+              <Route exact path={routes.BLOG} component={() => <Blog title='Podcasts' />} />
               <Route exact path={routes.ABOUT} component={() => <About title='A propos' />} />
             </Switch>
           </div>
@@ -47,5 +46,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default withAuth(App);

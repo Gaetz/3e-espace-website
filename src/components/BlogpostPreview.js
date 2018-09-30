@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
+//import firebase from 'firebase';
 
 import { MediaType } from '../constants/enums';
 
@@ -11,11 +11,8 @@ class BlogpostPreview extends Component {
         this.state = {
             imageUrl: ''
         }
-        this.storageRef = firebase.storage().ref();
-    }
-
-    componentWillMount() {
-        /*this.storageRef.child(this.props.post.banner).getDownloadURL().then(url => {
+        /*this.storageRef = firebase.storage().ref();
+        this.storageRef.child(this.props.post.banner).getDownloadURL().then(url => {
             this.setState({ imageUrl: url })
         }).catch(error => console.log(error));*/
     }
@@ -64,7 +61,6 @@ class BlogpostPreview extends Component {
                     <div className='col-sm-1' />
                 </div>
         }*/
-        console.log(this.props.post.content)
         return (
             <div>
                 <div className='card'>

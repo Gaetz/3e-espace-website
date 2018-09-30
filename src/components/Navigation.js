@@ -15,7 +15,6 @@ class Navigation extends Component {
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav mr-auto">
                             <Navlink title='Podcasts' route={routes.BLOG} />
-                            <Navlink title='Communauté' route={routes.COMMUNITY} />
                             <Navlink title='A propos' route={routes.ABOUT} />
                         </ul>
                     </div>
